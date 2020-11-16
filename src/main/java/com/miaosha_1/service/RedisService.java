@@ -1,6 +1,7 @@
 package com.miaosha_1.service;
 
 import com.alibaba.fastjson.JSON;
+import com.miaosha_1.redis.KeyPrefix;
 import com.miaosha_1.redis.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +21,15 @@ public class RedisService {
     RedisConfig redisConfig;
     @Autowired
     JedisPool jedisPool;
-    public <T> T get(String key,Class<T> clazz){
+    /*
+    获取对象
+     */
+    public <T> T get(KeyPrefix prefix, String key, Class<T> clazz){
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            String str = jedis.get(key);
+            String realKey = prefix.getPrefix()+key;
+            String str = jedis.get(realKey);
             T t = stringToBean(str,clazz);
             return t;
         } finally {
@@ -32,7 +37,10 @@ public class RedisService {
         }
     }
 
-    public <T> Boolean set(String key,T value){
+    /*
+    获取对象
+     */
+    public <T> Boolean set(KeyPrefix prefix,String key,T value){
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
@@ -40,12 +48,65 @@ public class RedisService {
             if (str == null || str.length()<=0){
                 return false;
             }
-            jedis.set(key,str);
+            String realKey = prefix.getPrefix()+key;
+            int expireSecond = prefix.expireSecond();
+            if (expireSecond<=0){
+                jedis.set(realKey ,str);
+            }else {
+                //有有效期的set：setex
+                jedis.setex(realKey,expireSecond,str);
+            }
+
             return true;
         } finally {
             returnToPool(jedis);
         }
 
+    }
+
+    /*
+    判断是否存在
+     */
+    public <T> Boolean exists(KeyPrefix prefix, String key, Class<T> clazz){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix()+key;
+            Boolean exists = jedis.exists(realKey);
+            return exists;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    增加值
+     */
+    public <T> Long incr(KeyPrefix prefix, String key, Class<T> clazz){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix()+key;
+            Long incr = jedis.incr(realKey);
+            return incr;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /*
+    减少值
+     */
+    public <T> Long decr(KeyPrefix prefix, String key, Class<T> clazz){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix()+key;
+            Long decr = jedis.decr(realKey);
+            return decr;
+        } finally {
+            returnToPool(jedis);
+        }
     }
 
     private <T> String beanToString(T value) {
@@ -75,7 +136,7 @@ public class RedisService {
         }else if (clazz == long.class || clazz == Long.class){
             return (T)Long.valueOf(str);
         }else{
-            return JSON.toJavaObject(JSON.parseArray(str),clazz);
+            return JSON.toJavaObject(JSON.parseObject(str),clazz);
         }
     }
 
