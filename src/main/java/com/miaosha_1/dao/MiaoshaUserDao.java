@@ -1,6 +1,6 @@
 package com.miaosha_1.dao;
 
-import com.miaosha_1.domain.User;
+import com.miaosha_1.domain.MiaoshaUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author qqtang
- * @Date 2020/11/13 17:09
+ * @Date 2020/11/17 16:15
  * @Desc
  */
-@Mapper
 @Component
-public interface UserDao {
-    @Select("select * from user where id = #{id}")
-    public User getById(@Param("id")Integer id);
+@Mapper
+public interface MiaoshaUserDao {
+    @Select("select * from miaosha_user where id = #{id}")
+    public MiaoshaUser getById(@Param("id")Long id);
 }

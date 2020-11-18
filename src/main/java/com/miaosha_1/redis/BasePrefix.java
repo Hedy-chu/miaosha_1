@@ -1,6 +1,5 @@
 package com.miaosha_1.redis;
 
-import com.miaosha_1.redis.KeyPrefix;
 
 /**
  * @author qqtang

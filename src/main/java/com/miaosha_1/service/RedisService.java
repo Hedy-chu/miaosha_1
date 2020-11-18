@@ -56,7 +56,6 @@ public class RedisService {
                 //有有效期的set：setex
                 jedis.setex(realKey,expireSecond,str);
             }
-
             return true;
         } finally {
             returnToPool(jedis);
