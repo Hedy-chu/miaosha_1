@@ -10,7 +10,6 @@ import com.miaosha_1.util.UUIDUtil;
 import com.miaosha_1.vo.LoginVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;

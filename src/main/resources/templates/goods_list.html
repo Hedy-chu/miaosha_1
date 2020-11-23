@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title> 商品列表 </title>
+    <title>商品详情</title>
+    <script type="text/javascript" th:src="@{/jquery-validation/lib/jquery-1.11.1.js}"></script>
+    <link type="text/css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.css}"/>
+    <script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<p th:text="'hello:'+${user}"/>
+<p th:text="'hello:'+${user.nickname}"/>
+<div class="panel-default">
+    <div class="panel-heading">秒杀商品详情</div>
+    <table class="table" id="goodslist">
+        <tr><td>商品名称</td><td>商品图片</td><td>商品原价</td><td>秒杀价</td><td>库存数量</td><td>详情</td></tr>
+        <tr th:each="goods,goodsStat:${goodsList}">
+            <td th:text="${goods.getGoodsName()}"></td>
+            <td><img th:src="@{${goods.goodsImg}}"width="80" height="60"></td>
+            <td th:text="${goods.getGoodsPrice()}"></td>
+            <td th:text="${goods.miaoshaPrice}"></td>
+            <td th:text="${goods.stockCount}"></td>
+            <td><a th:href="'/goods/to_detail/'+${goods.id}">详情</a></td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

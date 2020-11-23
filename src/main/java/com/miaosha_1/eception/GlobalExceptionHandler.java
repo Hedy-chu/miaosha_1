@@ -33,6 +33,7 @@ import java.util.List;
             String message = error.getDefaultMessage();
             return Result.error(CodeMsg.BIND_ERROR.fillArgs(message));
         }else{
+            System.out.println(e);
             return Result.error(CodeMsg.SERVER_ERROR);
         }
     }

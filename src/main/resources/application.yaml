@@ -8,16 +8,11 @@ spring:
     enabled: true
     encoding: UTF-8
     mode: HTML5
-  mybatis:
-    type-aliases-package: com.miaosha_1.domain
-    configuration:
-       map-underscore-to-camal-case: true
-       default-fetch-siae: 100
-    mapperLocations: classpath:com/miaosha_1/dao/*.xml
+
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/miaoosha_1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/miaoosha_1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
   driver‐class‐name: com.mysql.cj.jdbc.Driver
   type: com.alibaba.druid.pool.DruidDataSource
   # 初始化大小，最小，最大
@@ -50,3 +45,10 @@ spring:
       max-idle: 10
       max-wait: 3
       MaxTotal: 1000
+#mybatis一定要顶格写，他不是spring下面的
+mybatis:
+  type-aliases-package: com.miaosha_1.domain
+  configuration:
+    map-underscore-to-camel-case: true
+  #       default-fetch-siae: 100
+  #    mapperLocations: classpath:com/miaosha_1/dao/*.xml
