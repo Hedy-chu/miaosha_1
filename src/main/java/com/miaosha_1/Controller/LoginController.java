@@ -3,9 +3,7 @@ package com.miaosha_1.Controller;
 import com.miaosha_1.result.CodeMsg;
 import com.miaosha_1.result.Result;
 import com.miaosha_1.service.MiaoshaUserService;
-import com.miaosha_1.util.ValidatorUtil;
 import com.miaosha_1.vo.LoginVo;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ import javax.validation.Valid;
 public class LoginController {
 
     private static Logger log = LoggerFactory.getLogger(LoginController.class);
-
     @Autowired
     MiaoshaUserService miaoshaUserService;
 

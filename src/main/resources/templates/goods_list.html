@@ -8,7 +8,7 @@
     <script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
 </head>
 <body>
-<p th:text="'hello:'+${user.nickname}"/>
+<!--<p th:text="'hello:'+${user.nickname}"/>-->
 <div class="panel-default">
     <div class="panel-heading">秒杀商品详情</div>
     <table class="table" id="goodslist">
@@ -19,7 +19,7 @@
             <td th:text="${goods.getGoodsPrice()}"></td>
             <td th:text="${goods.miaoshaPrice}"></td>
             <td th:text="${goods.stockCount}"></td>
-            <td><a th:href="'/goods/to_detail/'+${goods.id}">详情</a></td>
+            <td><a th:href="'/goods_detail.htm?goodsId='+${goods.id}">详情</a></td>
         </tr>
     </table>
 </div>

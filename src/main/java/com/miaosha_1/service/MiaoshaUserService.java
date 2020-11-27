@@ -32,10 +32,34 @@ public class MiaoshaUserService {
     RedisService redisService;
 
     public MiaoshaUser getById(Long id) {
-        MiaoshaUser miaoshaUser = miaoshaUserDao.getById(id);
-        return miaoshaUser;
+        MiaoshaUser user = redisService.get(MiaoShaUserKey.getById, "" + id, MiaoshaUser.class);
+        if (user != null){
+            return user;
+        }
+        user = miaoshaUserDao.getById(id);
+        if (user != null){
+            redisService.set(MiaoShaUserKey.getById, "" + id, user);
+        }
+        return user;
     }
 
+    //更改密码，这个用不到，但实际开发会用到
+    public boolean updatePassword(Long id,String passwordNew,String token){
+        MiaoshaUser user = getById(id);
+        if (user == null){
+            return false;
+        }
+        //更改数据库
+        MiaoshaUser toBeUpdate = new MiaoshaUser();
+        toBeUpdate.setId(id);
+        toBeUpdate.setPassword(MD5Util.fromPassToDBPass(passwordNew,user.getSalt()));
+        miaoshaUserDao.update(toBeUpdate);
+        //更新缓存
+        redisService.delete(MiaoShaUserKey.getById, "" + id);
+        user.setPassword(passwordNew);
+        redisService.set(MiaoShaUserKey.token,token,user);
+        return true;
+    }
     public MiaoshaUser getByToken(HttpServletResponse response,String token) {
         if (StringUtils.isEmpty(token)){
             return null;
