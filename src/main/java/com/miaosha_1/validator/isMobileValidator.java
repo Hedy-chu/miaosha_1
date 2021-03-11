@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
  * @Date 2020/11/17 19:25
  * @Desc
  */
-public class isMobileValidator implements ConstraintValidator <isMobile,String>{
+class IsMobileValidator implements ConstraintValidator <isMobile,String>{
 
     private boolean required = false;
     @Override
